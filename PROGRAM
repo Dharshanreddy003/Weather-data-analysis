@@ -1,0 +1,42 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load historical weather data into a DataFrame
+weather_data = pd.read_csv('historical_weather_data.csv')
+
+# Convert date column to datetime format
+weather_data['Date'] = pd.to_datetime(weather_data['Date'])
+
+# Filter data for a specific location (e.g., New York)
+location_data = weather_data[weather_data['Location'] == 'New York']
+
+# Line chart for temperature over time
+plt.figure(figsize=(10, 6))
+plt.plot(location_data['Date'], location_data['Temperature'], marker='o', linestyle='-')
+plt.title('Temperature Over Time in New York')
+plt.xlabel('Date')
+plt.ylabel('Temperature (°C)')
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.show()
+
+# Line chart for precipitation over time
+plt.figure(figsize=(10, 6))
+plt.plot(location_data['Date'], location_data['Precipitation'], marker='o', linestyle='-')
+plt.title('Precipitation Over Time in New York')
+plt.xlabel('Date')
+plt.ylabel('Precipitation (mm)')
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.show()
+
+# Create a heatmap to show temperature variations across different regions
+plt.figure(figsize=(10, 6))
+heatmap_data = weather_data.pivot_table(index='Region', columns='Date', values='Temperature', aggfunc='mean')
+sns.heatmap(heatmap_data, cmap='coolwarm', cbar=True)
+plt.title('Temperature Variations Across Regions')
+plt.xlabel('Date')
+plt.ylabel('Region')
+plt.xticks(rotation=45)
+plt.show()
