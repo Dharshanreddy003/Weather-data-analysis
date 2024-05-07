@@ -3,40 +3,43 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load historical weather data into a DataFrame
-weather_data = pd.read_csv('historical_weather_data.csv')
+data = pd.read_csv('C:\Dharshan\weather.csv')
+print(data.head())
 
-# Convert date column to datetime format
-weather_data['Date'] = pd.to_datetime(weather_data['Date'])
-
-# Filter data for a specific location (e.g., New York)
-location_data = weather_data[weather_data['Location'] == 'New York']
-
-# Line chart for temperature over time
-plt.figure(figsize=(10, 6))
-plt.plot(location_data['Date'], location_data['Temperature'], marker='o', linestyle='-')
-plt.title('Temperature Over Time in New York')
-plt.xlabel('Date')
-plt.ylabel('Temperature (°C)')
-plt.xticks(rotation=45)
-plt.grid(True)
+df = data.head(25)
+#Analyze historical weather data (e.g., temperature, precipitation, wind speed) for a specific location.
+plt.figure(figsize=(12,8))
+sns.barplot(x='wind_speed',y='wind_speed',data=df,color='blue',label='region',orient='h')
+sns.barplot(x='wind_direction',y='wind_speed',data=df,color='orange',label='reside',orient='h')
+plt.title("Weather Analysis")
+plt.xlabel("temperature")
+plt.ylabel("wind speed")
 plt.show()
 
-# Line chart for precipitation over time
+# Visualize trends in temperature or precipitation over time using line charts.
 plt.figure(figsize=(10, 6))
-plt.plot(location_data['Date'], location_data['Precipitation'], marker='o', linestyle='-')
-plt.title('Precipitation Over Time in New York')
-plt.xlabel('Date')
-plt.ylabel('Precipitation (mm)')
+sns.lineplot(x='wind_speed', y='wind_direction', data=df, label='wind speed', marker='o', linestyle='-', color='blue')
+sns.lineplot(x='wind_speed', y='temperature', data=df, label='temperature', marker='o', linestyle='-', color='orange')
+plt.title('General trend in weather')
+plt.xlabel('humidity')
+plt.ylabel('precipitation')
+plt.legend()
+# Rotate x-axis labels for better visibility
 plt.xticks(rotation=45)
-plt.grid(True)
 plt.show()
 
-# Create a heatmap to show temperature variations across different regions
+Regioncode= input('Enter the  region code : ')
+reside = {
+    'Yr': [Regioncode] * 100,
+    'x': np.random.randint(0, 101, 100),  # x-coordinates
+    'y': np.random.randint(0, 101, 100)   # y-coordinates
+}
+df_service = pd.DataFrame(reside)
+# Create a heatmap for average network distribution regarding their age
 plt.figure(figsize=(10, 6))
-heatmap_data = weather_data.pivot_table(index='Region', columns='Date', values='Temperature', aggfunc='mean')
-sns.heatmap(heatmap_data, cmap='coolwarm', cbar=True)
-plt.title('Temperature Variations Across Regions')
-plt.xlabel('Date')
-plt.ylabel('Region')
-plt.xticks(rotation=45)
+sns.kdeplot(data=df_service, x='x', y='y', cmap='coolwarm', fill=True, thresh=0.05)
+plt.title(Regioncode+'  --- temperature analysis')
+plt.xlabel('Temperature')
+plt.ylabel('Range')
 plt.show()
+
