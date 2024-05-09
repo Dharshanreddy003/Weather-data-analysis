@@ -43,3 +43,22 @@ plt.xlabel('Temperature')
 plt.ylabel('Range')
 plt.show()
 
+
+weather_data = pd.read_csv('C:\Dharshan\weather.csv')
+subset_data = weather_data.head(8)
+labels = subset_data['region']
+values = subset_data['wind_speed']
+plt.pie(values, labels=labels, autopct='%1.1f%%')
+plt.title('Analyse of wind speed')
+plt.show()
+
+# Sort the data based on temperature in descending order
+sorted_data = weather_data.sort_values(by='temperature', ascending=False)
+# Select the coldest place
+coldest_place = sorted_data.head(1)
+location = coldest_place['location']
+# Create a map centered around the mean latitude and longitude of the data
+map_weather = folium.Map(location=[62.0874, 152.7311], zoom_start=6, width=900, height=500)
+folium.Marker([62.0874, 152.7311], popup=location).add_to(map_weather)
+print(location)
+map_weather
